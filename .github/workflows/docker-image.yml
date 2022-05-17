@@ -1,9 +1,11 @@
 name: Docker Image CI
 
 on:
+  push:
+    branches: [ master ]
   pull_request:
     branches: [ master ]
-    
+
 env:
   RESOURCE_GROUP: "devRG"
   CLUSTER_NAME: "henry-aks-dev"
