@@ -11,7 +11,7 @@ RUN yarn build
 # deploy stage
 FROM nginx:alpine
 COPY --from=build ${APP_HOME}/build /var/www
-COPY ./frontend/nginx /etc/nginx/conf.d/
+COPY ./nginx /etc/nginx/conf.d/
 
 WORKDIR /usr/share/nginx/html
 CMD ["nginx", "-g", "daemon off;"]
