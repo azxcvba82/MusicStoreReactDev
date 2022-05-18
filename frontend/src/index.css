@@ -1,13 +1,703 @@
-body {
+/* 原始style */
+* {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  padding: 0;
+  font-family: "微軟正黑體";
+  color: white;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+.header {
+  position: fixed;
+  width: 100%;
+  height: 70px;
+  background-color: black;
+  z-index: 100;
+}
+
+.header-logo {
+  position: relative;
+  display:inline-block;
+  top: 10px;
+  width: 180px;
+  padding-left: 10px;
+  font-size: 25px;
+  background: black;
+}
+
+  .header-logo > img {
+      display: inline-block;
+      width: 170px;
+      height: 60px;
+  }
+
+.header-logo-text {
+  color: white;
+}
+
+.header-button {
+  position: absolute;
+  top: 15px;
+  right: 20px;
+}
+
+/*登入頭像*/
+.header-Upperrightcorner-img {
+  position: absolute;
+  display: inline-block;
+  margin-right: 5px;
+  width: 45px;
+  height: 45px;
+  top: -5px;
+  right: 120px;
+  border-radius: 50%;
+  background-size: 100%;
+  background-repeat: no-repeat;
+  cursor: pointer;
+}
+
+#content {
+  display: flex;
+  position: relative;
+  left: 0; /*將子元素的定位到具體的參照對象*/
+  width: 100%;
+  background-color: #191919;
+}
+
+.sidebox {
+  padding-top: 40px;
+  position: fixed;
+  width: 200px;
+  height: 100vh;
+  background-color: #060606;
+  color: white;
+  margin-top: 70px;
+}
+
+.mainbox {
+  width: 100%;
+  min-height: calc(100vh - 200px);
+  position: relative;
+  margin-top: 70px;
+  margin-bottom: 110px;
+  margin-left: 200px;
+}
+
+#footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  color: white;
+  background-color: #252525;
+  box-shadow: 0 0 2em black;
+  z-index: 500;
+}
+
+/*額外更新左邊選單*/
+li {
+  list-style-type: none;
+  margin: 5px;
+}
+
+a {
+  /*要加上!important才能強行刪除底線*/
+  text-decoration: none !important;
+}
+
+.menuItem {
+  width: 190px;
+  font-weight: 600;
+  font-size: 14px;
+  text-decoration: none;
+  border-radius: 5px;
+  transition: 0.4s;
+}
+  /*當滑鼠滑到該元素上，底下的兩個子元素會有變化的寫法*/
+  /*透過jQuery改變css會導致此項失效(jQuery的語法會將改變的內容放在標籤內，優先層級較高)
+/*一樣使用!important可以解決*/
+  .menuItem:hover > span,
+  .menuItem:hover > .fa {
+      color: white !important;
+  }
+
+.menuItemSelected {
+  background-color: #3a3a3a;
+}
+
+.menuItem .fa {
+  font-size: 20px;
+  margin: 10px 20px;
+  color: #656565;
+  transition: 0.4s;
+}
+
+.menuItem span {
+  display: inline-block;
+  position: relative;
+  bottom: 3px;
+  color: #656565;
+  transition: 0.4s;
+}
+
+/*全介面的scrollBar*/
+body::-webkit-scrollbar {
+  width: 15px;
+}
+
+body::-webkit-scrollbar-track {
+  background-color: #191919;
+}
+
+body::-webkit-scrollbar-thumb {
+  border-radius: 4px;
+  background-color: #3a3a3a;
+}
+
+/* 搜尋條style */
+.searchBar {
+top: -55px;
+position: relative;
+left: 185px;
+margin: 15px;
+width: 20%;
+min-width: 200px;
+}
+/*不用id變不了bootstrap的文字顏色*/
+/*#advancedBtn {
+color: whitesmoke;
+}*/
+
+.advancedPanel {
+display: none;
+width: 530px;
+border-radius: 10px;
+padding: 5px 20px 20px 20px;
+background-color: #040404;
+background-image: linear-gradient(#474747,#040404);
+opacity: 0;
+transition: 0.1s;
+box-shadow: 1px 1px 2px #818181;
+}
+
+.advancedItem {
+display: inline-flex;
+flex-wrap: wrap;
+width: 140px;
+margin: 10px;
+}
+
+.ui-menu-item-wrapper,
+option {
+color: black;
+}
+
+.advancedSelect {
+margin: 10px;
+}
+
+.selectedItem,
+.selectableItem,
+.itemAdd {
+display: inline-block;
+border-radius: 5px;
+border: 1px solid #212121;
+padding: 5px;
+margin: 2px 1px;
+color: white;
+font-weight: 600;
+}
+
+.selectedItem {
+display: none;
+}
+
+.itemAdd {
+padding: 5px 10px;
+}
+
+.selectableItem,
+.selectedItem,
+.itemAdd {
+cursor: pointer;
+}
+
+.itemAdd:hover {
+    background-color: rgba(6, 78, 137, 0.90)
+}
+
+.selectableItemPanel {
+display: none;
+position: absolute;
+width: 90%;
+min-width: 200px;
+border-radius: 5px;
+background-color: rgba(0, 0, 0, 0.8);
+transition: 0.1s;
+box-shadow: 1px 1px 2px #525252;
+}
+
+.adSwitch {
+opacity: 1;
+display: block;
+}
+
+.searchPanel {
+width: 100%;
+text-align: right;
+}
+
+.adSearchBtn {
+background-image: linear-gradient(to bottom right, #22b7e8,#1347d9);
+margin-right: 10px;
+}
+/* 播放器style */
+#playerPanel {
+position: relative;
+width: 100%;
+min-width: 1200px;
+height: 110px;
+}
+
+#titlePanel {
+position: absolute;
+left: 110px;
+width: 14%;
+height: 80px;
+margin: 10px;
+text-overflow: ellipsis;
+white-space: nowrap;
+overflow: hidden;
+}
+
+img.playerCover {
+width: 100px;
+height: 100px;
+margin: 3px;
+}
+
+#playerfigure {
+position: absolute;
+width: 100px;
+margin: 2px;
+color: white;
+}
+
+.description {
+font-size: 14px;
+font-weight: 600;
+}
+
+.descriptionSub {
+color: rgb(199, 194, 194);
+font-size: 10px;
+white-space: nowrap;
+}
+
+.descriptionSub.singer {
+  font-style: italic;
+}
+
+#btnPanel {
+position: relative;
+top: 3px;
+width: 400px;
+margin: auto;
+text-align: center;
+}
+
+#progressPanel {
+position: relative;
+width: 55%;
+margin: 5px auto;
+text-align: center;
+}
+
+#volumePanel {
+position: absolute;
+right: 0px;
+top: 40px;
+width: 160px;
+}
+
+.sound {
+width: 30px;
+height: 22px;
+filter: invert();
+}
+
+#volumeBar {
+-webkit-appearance: none;
+border-radius: 50px;
+width: 100px;
+height: 5px;
+outline: none;
+}
+
+#volumeBar:hover,
+#progress:hover,
+.sound:hover {
+  cursor: pointer;
+}
+
+#progress {
+-webkit-appearance: none;
+border-radius: 50px;
+top: 50px;
+width: 80%;
+height: 5px;
+/*下面這個不關掉的話選取進度條時會出現藍框*/
+outline: none;
+margin: auto;
+transition: 0.2s;
+}
+
+input::-webkit-slider-thumb {
+-webkit-appearance: none;
+position: relative;
+width: 11px;
+height: 11px;
+background-color: white;
+border-radius: 50%;
+transition: 0.2s;
+}
+
+input::-webkit-slider-runnable-track {
+transition: 0.5s;
+}
+
+input::-webkit-slider-thumb:hover {
+width: 15px;
+height: 15px;
+}
+
+.btn:hover {
+background: skyblue;
+cursor: pointer;
+}
+
+.btn:active {
+background: silver;
+}
+
+.btn img {
+width: 30px;
+height: 22.5px;
+margin: 10px;
+/*下面是色彩反轉的濾鏡效果(把黑圖片變白)*/
+filter: invert();
+}
+/* 會員專輯頁style */
+.albumname {
+width: 200px;
+height: 45px;
+overflow: hidden; /*超出範圍的部分隱藏*/
+text-overflow: ellipsis; /*出現省略號*/
+white-space: nowrap;
+}
+
+.productitem {
+float: left;
+color: white;
+margin-left: 10px;
+margin-bottom: 0.5%;
+font-family: 微軟正黑體;
+background-color: #444444;
+cursor: pointer;
+border-radius: 10px
+}
+
+.productitem:hover {
+background-color: dimgray;
+}
+
+.productitemhy:link {
+color: white;
+text-decoration: none;
+}
+
+.productitemhy:visited {
+color: white;
+}
+
+.headtitle {
+color: white;
+margin-left: 20px;
+font-family: 微軟正黑體;
+}
+/* modal(彈出)版面style */
+#modal {
+position: fixed;
+width: 100vw;
+height: 100vh;
+background-color: rgba(0, 0, 0, 0.7);
+display: none;
+z-index: 999;
+transition: 0.6s;
+opacity: 0;
+}
+
+#modal.fadein {
+opacity: 1;
+}
+
+#modalContent {
+position: relative;
+top: 10%;
+width: 30%;
+padding: 20px;
+background-color: #333333;
+border-radius: 20px;
+margin: auto;
+transition: 0.6s;
+opacity: 0;
+}
+
+#modalContent.fadein {
+top: 20%;
+opacity: 1;
+}
+/* 通用介面的loading符號 */
+.loading {
+position: relative;
+text-align: center;
+top: 50%;
+}
+/* 播放清單介面 */
+.playListPanel {
+position: fixed;
+display: flex;
+height: calc(100vh - 110px);
+width: 400px;
+background-color: #2b2b2b;
+right: -415px;
+z-index: 500;
+transition: 0.4s;
+box-shadow: -5px -30px 2em 5px #151515;
+border-radius: 5px 0 0 5px;
+}
+
+.open {
+right: 0px;
+}
+
+.playListSwitch.s1 {
+position: fixed;
+display: inline-block;
+width: 30px;
+/*高度為減掉頁首及播放器*/
+height: calc(100% - 180px);
+right: 0px;
+background-color: transparent;
+top: 70px;
+font-size: 24px;
+text-align: center;
+padding: 18% 5px;
+cursor: pointer;
+transition: 0.3s;
+z-index: 499;
+border-radius: 5px 0 0 5px;
+}
+
+.playList {
+float: left;
+flex-wrap: wrap;
+position: relative;
+height: 100%;
+width: 100%;
+overflow: auto;
+}
+
+.playListSwitch.s2 {
+position: relative;
+height: 100%;
+width: 24px;
+background-color: transparent;
+padding: 90% 10px;
+cursor: pointer;
+transition: 0.3s;
+z-index: 499;
+}
+
+.playListSwitch:hover {
+background-color: rgba(255, 255, 255, 0.1);
+}
+
+.playListItem {
+display: flex;
+width: 95%;
+margin: 5px 0px;
+padding: 5px 5px 6px 5px;
+cursor: pointer;
+}
+
+.playListItem:hover {
+background-color: #666666;
+}
+
+.plSymbol {
+position: relative;
+display: inline-block;
+height: 40px;
+width: 40px;
+font-size: 21px;
+background-color: #cecece;
+padding: 3.5px 7.5px 4.5px 6px;
+border-radius: 50%;
+margin: 4px 10px 0 5px;
+}
+
+.plSymbol i {
+color: #258ade;
+transform: rotate(5deg) scaleY(1.1) skewX(10deg);
+}
+
+.plDescription {
+display: inline-block;
+width: 90%;
+}
+
+.hr {
+border-bottom: 1px solid #cecece;
+margin: 2px;
+}
+
+.mTitle {
+font-size: 16px;
+font-weight: 600;
+width: 95%;
+text-overflow: ellipsis;
+white-space: nowrap;
+overflow: hidden;
+}
+
+.mDetail {
+font-size: 12px;
+font-style: italic;
+width: 95%;
+text-overflow: ellipsis;
+white-space: nowrap;
+overflow: hidden;
+}
+
+.playingItem {
+background-color: #666666;
+}
+
+.playingSymbol i {
+color: #33b630;
+}
+/*清單的scroll條棒*/
+.playList::-webkit-scrollbar {
+width: 10px;
+}
+
+.playList::-webkit-scrollbar-thumb {
+border-radius: 4px;
+background-color: #4a4a4a;
+}
+
+.noLogin {
+position: relative;
+top: 40%;
+text-align: center;
+}
+
+.playlistLogon,
+.playlistLogin {
+color: #1ca4e9;
+cursor: pointer;
+}
+
+
+
+/* original index */
+
+.albumPanel {
+  display: flex;
+  flex-wrap: wrap;
+  min-width: 600px;
+  position: relative;
+  padding: 20px;
+}
+.albumBlock {
+  display: block;
+  width: 15vw;
+  height: 22vw;
+  min-width: 200px;
+  min-height: 293px;
+  text-align: center;
+  background-color: #292929;
+  border-radius: 10px;
+  margin: 10px;
+  padding: 20px;
+  cursor: pointer;
+  overflow: hidden;
+  transition: 0.4s;
+  opacity: 0;
+  /*避免廣告輪播過程中網頁中的字串突然出現的閃動效果*/
+  -webkit-transform: translateZ(0px);
+}
+.animation {
+  opacity: 1;
+}
+.albumBlock:hover {
+  background-color: #353535;
+  text-decoration: none;
+}
+.albumCover {
+  position: relative;
+  display: inline-block;
+  width: 12vw;
+  height: 12vw;
+  min-width: 160px;
+  min-height: 160px;
+  border-radius: 10px;
+  /*測試用圖片*/
+  /*background-image: url("/Images/4.jpg");*/
+  background-size: cover;
+}
+.albumContent {
+  position: relative;
+  width: 100%;
+  min-width: 160px;
+  overflow: hidden;
+  text-align: left;
+  margin: 5px 0px;
+}
+.albumTitle {
+  display: block;
+  min-width: 160px;
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 8px;
+  /*使多出的字元變...，下面三個屬性都要設才有效果*/
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+.albumDescripion {
+  display: block;
+  min-width: 160px;
+  font-size: 16px;
+  font-weight: 600;
+  color: #808080;
+  margin-bottom: 5px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+/*廣告牆*/
+#adCarousel {
+  margin: 50px auto;
+  width: 900px;
+}
+.carousel-item {
+  cursor: pointer;
+}
+/*折扣文字*/
+.discount {
+  position: relative;
+  font-size: 12px;
+  font-weight: 800;
+  color: red;
 }
