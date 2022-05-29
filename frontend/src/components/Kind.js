@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import {
+  environment
+} from "../environment";
+import KindService from "../services/kind.service";
 // displays a page header
 
 export default function Kind() {
@@ -8,7 +11,7 @@ export default function Kind() {
   const [isAnimated, setAnimate] = useState(false);
   const [isError, setIsError] = useState(false);
   const fetchKindData = () => {
-    axios.get('https://api.azxcvba99.net/allkind')
+    KindService.allkind()
       .then((response) => {
         setIsLoading(false);
         setKind(response.data);
@@ -42,7 +45,7 @@ export default function Kind() {
     <div class="kindBlock" data-kind={object.KindID} data-color={object.Color} >
         <span class="kindName">{object.KindName}</span>
 
-        <div class="photo" className={isAnimated ? "photo fadein" : "photo"} style={{backgroundImage:`url(https://staticdatahenry.blob.core.windows.net/images/${object.PhotoPath})`}}></div>
+        <div class="photo" className={isAnimated ? "photo fadein" : "photo"} style={{backgroundImage:`url(${environment.production.blobStorage+object.PhotoPath})`}}></div>
     </div>
     </a>
             
