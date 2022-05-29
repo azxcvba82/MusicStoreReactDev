@@ -1,16 +1,19 @@
 import './App.css';
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Link, Route, Switch } from "react-router-dom";
-import React, { useState,useEffect,useCallback } from "react";
+import React, { useState,useCallback } from "react";
 import {
   Header,
   Mainbox,
   Kind,
-  Modal
+  Modal,
+  Album,
+  MyAlbumList,
+  Notfound
 } from "./components";
 
  import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
- import { faSearch,faHome,faCaretLeft,faCaretRight } from '@fortawesome/free-solid-svg-icons'
+ import { faSearch,faHome,faCaretLeft,faCaretRight,faHeadphones } from '@fortawesome/free-solid-svg-icons'
 
 import spiderfly from './images/spiderfly.png';
 import random from './PlayerImg/random.png';
@@ -259,31 +262,43 @@ function App() {
                         </div>
                     </a>
                 </li>
-
-                {/* <li>
-                        <a href="@Url.Action("TwoPlayer", "Player")">
+                { userName === "" ? <div></div>:
+                <li>
+                        <a href="">
                             <div class="menuItem">
-                                <i class="fa fa-headphones"></i>
-                                <span>雙重播放器測試</span>
+                            <FontAwesomeIcon icon={faHeadphones}></FontAwesomeIcon>
+                            <Link to="/myAlbumList"><span>我的發行</span></Link>
                             </div>
                         </a>
-                    </li> */}
-
+                </li>
+                }
             </ul>
         </div>
 
 
         {/* 內容主體 */}
-        <div className="mainbox">
-        <Switch>
-        <Route exact path="/">
-        <Mainbox />
-        </Route>
-        <Route exact path="/kind">
-        <Kind />
-        </Route>
-        </Switch>
-        </div>
+                  <div className="mainbox">
+                      <Switch>
+                          <Route exact path="/">
+                              <Mainbox />
+                          </Route>
+                          <Route path="/kind">
+                              <Kind />
+                          </Route>
+                          <Route exact path="/album">
+                              <h3>please enter albumId</h3>
+                          </Route>
+                          <Route path="/album/:id">
+                              <Album />
+                          </Route>
+                          <Route path="/myAlbumList">
+                              {userName === "" ? <Notfound /> : <MyAlbumList />}
+                          </Route>
+                          <Route path="*">
+                              <Notfound />
+                          </Route>
+                      </Switch>
+                  </div>
         {/* 播放器 */}
 
         <div id="footer">

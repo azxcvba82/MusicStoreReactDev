@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import axios from 'axios';
+import LoginService from "../services/login.service";
 // displays a page header
 
 export default function Modal({
@@ -41,32 +41,25 @@ export default function Modal({
   };
 
   const postLoginData = () => {
-    axios.post('https://api.azxcvba99.net/login',{
-       account,
-       password
-    })
-      .then((response) => {
-        setPassword("")
-        setIsLoading(false);
-        setIsError(false);
-        setErrorMes("")
-        localStorage.setItem("token","Bearer "+response.data.token);
-        result(account);
-      })
-      .catch((error) => {
-        setPassword("")
-        setIsLoading(false);
-        setIsError(true);
-        setErrorMes(error.response.data.message)
-      });
+    LoginService.login(account,password)
+     .then((response) => {
+       setPassword("")
+       setIsLoading(false);
+       setIsError(false);
+       setErrorMes("")
+       localStorage.setItem("token","Bearer "+response.data.token);
+       result(account);
+     })
+     .catch((error) => {
+       setPassword("")
+       setIsLoading(false);
+       setIsError(true);
+       setErrorMes(error.response.data.message)
+     });
   };
 
   const postSignupData = () => {
-    axios.post('https://api.azxcvba99.net/signup',{
-       account,
-       password,
-       email
-    })
+    LoginService.login(account,password,email)
       .then((response) => {
         setPassword("")
         setIsLoading(false);
