@@ -9,7 +9,8 @@ import {
   Modal,
   Album,
   MyAlbumList,
-  Notfound
+  Notfound,
+  KindResult
 } from "./components";
 
  import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -282,8 +283,11 @@ function App() {
                           <Route exact path="/">
                               <Mainbox />
                           </Route>
-                          <Route path="/kind">
+                          <Route exact path="/kind">
                               <Kind />
+                          </Route>
+                          <Route path="/kind/:id">
+                              <KindResult />
                           </Route>
                           <Route exact path="/album">
                               <h3>please enter albumId</h3>

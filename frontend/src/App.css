@@ -918,3 +918,90 @@ cursor: pointer;
   .discount {
       color: red;
   }
+
+  /* KindResultView */
+  .albumPanel {
+    display: flex;
+    flex-wrap: wrap;
+    min-width: 600px;
+    position: relative;
+    padding: 20px;
+}
+
+.albumBlock {
+    display: block;
+    width: 15vw;
+    height: 22vw;
+    min-width: 200px;
+    min-height: 293px;
+    text-align: center;
+    background-color: #292929;
+    border-radius: 10px;
+    margin: 10px;
+    padding: 20px;
+    cursor: pointer;
+    transition: 0.4s;
+    opacity: 0;
+}
+
+.animation {
+    opacity: 1;
+}
+
+.albumBlock:hover {
+    background-color: #353535;
+    text-decoration: none;
+}
+
+.albumCover {
+    position: relative;
+    display: inline-block;
+    width: 12vw;
+    height: 12vw;
+    min-width: 160px;
+    min-height: 160px;
+    border-radius: 10px;
+    /*測試用圖片*/
+    /*background-image: url("/Images/4.jpg");*/
+    background-size: cover;
+}
+
+.albumContent {
+    position: relative;
+    width: 100%;
+    min-width: 160px;
+    overflow: hidden;
+    text-align: left;
+    margin: 5px 0px;
+}
+
+.albumTitle {
+    display: block;
+    min-width: 160px;
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 8px;
+    /*使多出的字元變...，下面三個屬性都要設才有效果*/
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.albumDescripion {
+    display: block;
+    min-width: 160px;
+    font-size: 16px;
+    font-weight: 600;
+    color: #808080;
+    margin-bottom: 5px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.noResult {
+    position: relative;
+    text-align: center;
+    top: 40%;
+    margin: auto;
+}
