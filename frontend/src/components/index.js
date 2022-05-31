@@ -3,6 +3,7 @@ export { default as Notfound } from "./Notfound";
 
 export { default as Mainbox } from "./Mainbox";
 export { default as Kind } from "./Kind";
+export { default as KindResult } from "./KindResult";
 export { default as MyAlbumList } from "./MyAlbumList";
 export { default as Album } from "./Album";
 

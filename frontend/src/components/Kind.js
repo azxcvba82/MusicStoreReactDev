@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from "react-router-dom";
 import {
   environment
 } from "../environment";
@@ -42,11 +43,11 @@ export default function Kind() {
     { kinds.map((object, i) =>
     
     <a class="outline">
-    <div class="kindBlock" data-kind={object.KindID} data-color={object.Color} >
+    <Link to={"/kind/"+object.KindID}><div class="kindBlock" data-kind={object.KindID} data-color={object.Color} style={{backgroundColor:object.Color,backgroundImage:`linear-gradient(to bottom,#16161660 15%,${object.Color})`}}>
         <span class="kindName">{object.KindName}</span>
 
         <div class="photo" className={isAnimated ? "photo fadein" : "photo"} style={{backgroundImage:`url(${environment.production.blobStorage+object.PhotoPath})`}}></div>
-    </div>
+    </div></Link>
     </a>
             
       )}
