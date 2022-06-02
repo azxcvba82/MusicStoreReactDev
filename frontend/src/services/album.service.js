@@ -9,6 +9,10 @@ class AlbumService{
     return axios.get(environment.production.apiEndpoint + '/getAlbumById?id='+id);
   }
 
+  static getAlbumsByKindId = (id) =>{
+    return axios.get(environment.production.apiEndpoint + '/getAlbumsByKindId?kindId='+id);
+  }
+
 }
  
 export default AlbumService 
