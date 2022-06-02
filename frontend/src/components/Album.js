@@ -36,7 +36,6 @@ export default function Album() {
         setProducts(response.data);
       })
       .catch((error) => {
-        setIsError(true);
         console.log(error);
       });
   };

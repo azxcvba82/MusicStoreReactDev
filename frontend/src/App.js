@@ -1,6 +1,6 @@
 import './App.css';
 import "bootstrap/dist/css/bootstrap.min.css";
-import { Link, Route, Switch } from "react-router-dom";
+import { Link, Route, Switch, useLocation } from "react-router-dom";
 import React, { useState,useCallback } from "react";
 import {
   Header,
@@ -10,11 +10,13 @@ import {
   Album,
   MyAlbumList,
   Notfound,
-  KindResult
+  KindResult,
+  Search,
+  MyMusic
 } from "./components";
 
  import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
- import { faSearch,faHome,faCaretLeft,faCaretRight,faHeadphones } from '@fortawesome/free-solid-svg-icons'
+ import { faSearch,faHome,faCaretLeft,faCaretRight,faHeadphones,faMusic } from '@fortawesome/free-solid-svg-icons'
 
 import spiderfly from './images/spiderfly.png';
 import random from './PlayerImg/random.png';
@@ -39,6 +41,8 @@ function App() {
   let [displayVolume, setDisplayVolume] = useState("inline-block");
   let [volumeValue, setVolume] = useState(0.5);
   let [volumeBar, setDisplayVolumeBar] = useState("-webkit-linear-gradient(left , #5599FF 50%,#fff 0px)");
+  let [menuItemSelected, setMenuItemSelected] = useState(0);
+  const [searchText, setSearchText] = useState("");
   const [userName, setUserName] = useState("");
   const tokenAccess = localStorage.getItem("token");
 
@@ -112,6 +116,13 @@ function App() {
         }, 500)
       });
 
+      function useQuery() {
+        const { search } = useLocation();
+      
+        return React.useMemo(() => new URLSearchParams(search), [search]);
+      }
+      let query = useQuery();
+      
     
 
   return (
@@ -162,12 +173,12 @@ function App() {
         <div className="searchBar">
             {/* @* 基本搜尋條(結合進階搜尋鍵) *@ */}
             <div className="input-group">
-                <input className="searchtxt form-control" type="text" placeholder="搜尋歌曲..." name="basicSearch"></input>
+                <input className="searchtxt form-control" type="text" placeholder="搜尋歌曲..." name="basicSearch" value={searchText} onChange={(e) => setSearchText(e.target.value)}></input>
                 <div className="input-group-append">
                     <div className="btn btn-outline-secondary" id="advancedBtn" onClick={handleAdvancedSearchOnClick}>進階搜尋</div>
-                    <div className="btn btn-outline-secondary searchBtn">
+                    <Link to={{pathname: "/search",search: "?name="+searchText }} ><div className="btn btn-outline-secondary searchBtn" >
                       <FontAwesomeIcon icon={faSearch}></FontAwesomeIcon>
-                    </div>
+                    </div></Link>
                 </div>
             </div>
 
@@ -176,7 +187,7 @@ function App() {
                 <div className="advancedItemGroup">
                     <div className="advancedItem">
                         歌曲名稱
-                        <input type="text" className="advancedtxt form-control" id="adSong" />
+                        <input type="text" className="advancedtxt form-control" id="adSong"  value={searchText} onChange={(e) => setSearchText(e.target.value)}/>
                     </div>
                     <div className="advancedItem">
                         專輯名稱
@@ -219,7 +230,7 @@ function App() {
 
                     {/* @* 進階搜尋鍵 *@ */}
                     <div className="searchPanel">
-                        <button className="btn btn-primary adSearchBtn">搜尋</button>
+                        <Link to={{pathname: "/search",search: "?name="+searchText }} ><button className="btn btn-primary adSearchBtn">搜尋</button></Link>
                     </div>
                 </div>
             </div>
@@ -248,30 +259,40 @@ function App() {
         <div class="sidebox">
             <ul>
                 <li>
-                    <a href="">
-                        <div className="menuItem">
+                    <Link to="/"><a href="">
+                        <div className={menuItemSelected === 1 ? "menuItem menuItemSelected" : "menuItem"} onClick={(e) => setMenuItemSelected(1)}>
                             <FontAwesomeIcon icon={faHome}></FontAwesomeIcon>
-                            <Link to="/"><span>首頁</span></Link>
+                            <span style={{color: menuItemSelected === 1 ? "white" : "#656565"}}>首頁</span>
                         </div>
-                    </a>
+                    </a></Link>
                 </li>
                 <li>
-                    <a href="">
-                        <div className="menuItem">
+                    <Link to="/kind"><a href="">
+                        <div className={menuItemSelected === 2 ? "menuItem menuItemSelected" : "menuItem"} onClick={(e) => setMenuItemSelected(2)}>
                             <FontAwesomeIcon icon={faSearch}></FontAwesomeIcon>
-                            <Link to="/kind"><span>音樂分類</span></Link>
+                            <span style={{color: menuItemSelected === 2 ? "white" : "#656565"}}>音樂分類</span>
                         </div>
-                    </a>
+                    </a></Link>
                 </li>
                 { userName === "" ? <div></div>:
+                <div>
                 <li>
-                        <a href="">
-                            <div class="menuItem">
+                        <Link to="/myAlbumList"><a href="">
+                            <div className={menuItemSelected === 3 ? "menuItem menuItemSelected" : "menuItem"} onClick={(e) => setMenuItemSelected(3)} >
                             <FontAwesomeIcon icon={faHeadphones}></FontAwesomeIcon>
-                            <Link to="/myAlbumList"><span>我的發行</span></Link>
+                            <span style={{color: menuItemSelected === 3 ? "white" : "#656565"}}>我的發行</span>
                             </div>
-                        </a>
+                        </a></Link>
                 </li>
+                <li>
+                        <Link to="/myMusic"><a href="">
+                            <div className={menuItemSelected === 4 ? "menuItem menuItemSelected" : "menuItem"} onClick={(e) => setMenuItemSelected(4)} >
+                            <FontAwesomeIcon icon={faMusic}></FontAwesomeIcon>
+                            <span style={{color: menuItemSelected === 4 ? "white" : "#656565"}}>我的音樂庫</span>
+                            </div>
+                        </a></Link>
+                </li>
+                </div>
                 }
             </ul>
         </div>
@@ -295,8 +316,14 @@ function App() {
                           <Route path="/album/:id">
                               <Album />
                           </Route>
+                          <Route path="/search" >
+                          <Search name={query.get("name")} />
+                          </Route>
                           <Route path="/myAlbumList">
                               {userName === "" ? <Notfound /> : <MyAlbumList />}
+                          </Route>
+                          <Route path="/myMusic">
+                              {userName === "" ? <Notfound /> : <MyMusic />}
                           </Route>
                           <Route path="*">
                               <Notfound />
