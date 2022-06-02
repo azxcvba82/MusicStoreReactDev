@@ -6,6 +6,8 @@ import {
   environment
 } from "../environment";
 import HomepageService from "../services/homepage.service";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faCircleNotch } from '@fortawesome/free-solid-svg-icons'
 
 
 // displays a page header
@@ -13,7 +15,7 @@ import HomepageService from "../services/homepage.service";
 export default function Mainbox() {
   const [activities, setActivities] = useState([]);
   const [albums, setAlbums] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [isAnimated, setAnimate] = useState(false);
   const [isError, setIsError] = useState(false);
   const fetchActivitiesData = () => {
@@ -50,7 +52,10 @@ export default function Mainbox() {
 }, 200)
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <div class="loading">
+      <FontAwesomeIcon icon={faCircleNotch}></FontAwesomeIcon>
+    <span class="sr-only">Loading...</span>
+</div>;
   }
   else if(activities===[]){
     return <div></div>;
