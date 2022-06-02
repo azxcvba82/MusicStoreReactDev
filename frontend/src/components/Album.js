@@ -9,10 +9,13 @@ import {
   environment
 } from "../environment";
 import AlbumService from "../services/album.service";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faCartArrowDown,faPlus } from '@fortawesome/free-solid-svg-icons'
 
 export default function Album() {
   let { id } = useParams();
   const [album, setAlbum] = useState({});
+  const [products, setProducts] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
   const fetchAlbumData = () => {
@@ -27,14 +30,25 @@ export default function Album() {
         console.log(error);
       });
   };
+  const fetchProductData = () => {
+    AlbumService.getProductsByAlbumId(id)
+      .then((response) => {
+        setProducts(response.data);
+      })
+      .catch((error) => {
+        setIsError(true);
+        console.log(error);
+      });
+  };
   useEffect(() => {
     fetchAlbumData();
+    fetchProductData();
   }, []);
 
   if (isLoading) {
     return <div>Loading...</div>;
   }
-  else if(isError==true){
+  else if(isError===true){
     return <Notfound />;
   }
   else if(album==={}){
@@ -80,7 +94,38 @@ export default function Album() {
 
 </div>
 <div class="musicsPanel">
+{ products.map((object, i) =>
+    
 
+<div class="container">
+            <div style={{display:"inlineBlock"}} class="vbtn dplay">
+            </div>
+            <h4 style={{display:"inlineBlock"}} class="fold-title">
+                <span>{i+1}.</span>
+                <span class="foldText">{object.ProductName}</span>
+                <i class="addThisSongToCart"><FontAwesomeIcon icon={faCartArrowDown}></FontAwesomeIcon></i>
+                <span><i class="addThisSongToPlayList"><FontAwesomeIcon icon={faPlus}></FontAwesomeIcon></i></span>
+            </h4>
+            <div class="fold">
+                <div class="fold-container">
+                    <span style={{color:"white"}}>演唱:{object.Singer}</span>
+                    <span style={{color:"white"}}>  /  作曲:{object.Composer}</span>
+                    {album.Discount != null &&
+                        <span>
+                            /  單曲售價:
+                            <del>${object.SIPrice}</del>
+                            <span class="discount">${object.SIPrice * album.Discount}</span>
+                        </span>
+                    }
+                    {album.Discount === null &&
+                        <span>  /  單曲售價:${object.SIPrice}</span>
+                    }
+                </div>
+            </div>
+</div>
+
+            
+      )}
 </div>
 </div>
   );

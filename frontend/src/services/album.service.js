@@ -9,6 +9,10 @@ class AlbumService{
     return axios.get(environment.production.apiEndpoint + '/getAlbumById?id='+id);
   }
 
+  static getProductsByAlbumId = (id) =>{
+    return axios.get(environment.production.apiEndpoint + '/getProductsByAlbumId?albumId='+id);
+  }
+
   static getAlbumsByKindId = (id) =>{
     return axios.get(environment.production.apiEndpoint + '/getAlbumsByKindId?kindId='+id);
   }
