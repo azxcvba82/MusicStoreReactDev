@@ -5,18 +5,16 @@ import {
 import {
   Notfound
 } from ".";
-import {
-  environment
-} from "../environment";
 import AlbumService from "../services/album.service";
+import StorageService from "../services/storage.service";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faCartArrowDown,faPlus } from '@fortawesome/free-solid-svg-icons'
+import { faCartArrowDown,faPlus,faCircleNotch } from '@fortawesome/free-solid-svg-icons'
 
 export default function Album() {
   let { id } = useParams();
   const [album, setAlbum] = useState({});
   const [products, setProducts] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [isError, setIsError] = useState(false);
   const fetchAlbumData = () => {
     AlbumService.getAlbumById(id)
@@ -45,7 +43,10 @@ export default function Album() {
   }, []);
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <div class="loading">
+    <FontAwesomeIcon icon={faCircleNotch}></FontAwesomeIcon>
+  <span class="sr-only">Loading...</span>
+</div>;
   }
   else if(isError===true){
     return <Notfound />;
@@ -56,7 +57,7 @@ export default function Album() {
   return (
 <div>
 <div class="albumset">
-    <div class="albumCover"><img src={environment.production.blobStorage+album.CoverPath} /></div>
+    <div class="albumCover"><img src={StorageService.getBlobStorage()+album.CoverPath} /></div>
     <h3 class="albumtext"><b>{album.AlbumName}</b></h3>
 
     {/* 新增:如有折扣顯示紅字折扣價03/07/2020 */}

@@ -1,15 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from "react-router-dom";
 import SearchService from "../services/search.service";
-import {
-  environment
-} from "../environment";
+import StorageService from "../services/storage.service";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faCircleNotch } from '@fortawesome/free-solid-svg-icons'
 
 // displays a page header
 
 export default function Search({ name }) {
   const [products, setProduct] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [isAnimated, setAnimate] = useState(false);
   const [isError, setIsError] = useState(false);
   const fetchSearchData = () => {
@@ -36,7 +36,10 @@ export default function Search({ name }) {
 }, 200)
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <div class="loading">
+    <FontAwesomeIcon icon={faCircleNotch}></FontAwesomeIcon>
+  <span class="sr-only">Loading...</span>
+</div>;
   }
   else if(name === "" || isError===true){
     return         <div class="noResult">
@@ -53,7 +56,7 @@ export default function Search({ name }) {
 { products.map((object, i) =>
     
     <Link to={"/album/"+object.AlbumID}><a className={isAnimated ? "albumBlock animation" : "albumBlock"} href="" data-album={object.AlbumID} title={object.AlbumName}>
-                <img src={environment.production.blobStorage + object.CoverPath} class="albumCover" />
+                <img src={StorageService.getBlobStorage() + object.CoverPath} class="albumCover" />
                 <div className="albumContent">
                     <span className="albumTitle">{object.ProductName}</span>
                     <span className="albumDescripion">{object.AlbumName}</span>
