@@ -28,6 +28,8 @@ export default function Search({ name }) {
   useEffect(() => {
     if(name !== ""){
     fetchSearchData();
+    }else{
+      setIsLoading(false);
     }
   }, [name]);
 

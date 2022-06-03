@@ -1,7 +1,7 @@
 import './App.css';
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Link, Route, Switch, useLocation } from "react-router-dom";
-import React, { useState,useCallback } from "react";
+import React, { useState,useCallback, useEffect } from "react";
 import {
   Header,
   Mainbox,
@@ -14,9 +14,11 @@ import {
   Search,
   MyMusic
 } from "./components";
+import SearchService from "./services/search.service";
+import KindService from "./services/kind.service";
 
  import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
- import { faSearch,faHome,faCaretLeft,faCaretRight,faHeadphones,faMusic } from '@fortawesome/free-solid-svg-icons'
+ import { faSearch,faHome,faCaretLeft,faCaretRight,faHeadphones,faMusic,faPlus } from '@fortawesome/free-solid-svg-icons'
 
 import spiderfly from './images/spiderfly.png';
 import random from './PlayerImg/random.png';
@@ -35,6 +37,7 @@ function App() {
   let [displayModalConponent, setModalConponent] = useState("");
   const [isPlayListOpen, setPlayListOpen] = useState(false);
   const [isAdvancedSearchOpen, setAdvancedSearchOpen] = useState(false);
+  const [isItemAddOpen, setItemAddOpen] = useState(false);
   let [displayPlay, setDisplayPlay] = useState("none");
   let [displayPause, setDisplayPause] = useState("inline-block");
   let [displayMute, setDisplayMute] = useState("none");
@@ -42,15 +45,43 @@ function App() {
   let [volumeValue, setVolume] = useState(0.5);
   let [volumeBar, setDisplayVolumeBar] = useState("-webkit-linear-gradient(left , #5599FF 50%,#fff 0px)");
   let [menuItemSelected, setMenuItemSelected] = useState(0);
+  const [albumType, setAlbumType] = useState([]);
+  const [kinds, setKind] = useState([]);
   const [searchText, setSearchText] = useState("");
   const [userName, setUserName] = useState("");
   const tokenAccess = localStorage.getItem("token");
+
+  const fetchAlbumTypeData = () => {
+    SearchService.allAlbumType()
+      .then((response) => {
+        setAlbumType(response.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+  const fetchKindData = () => {
+    KindService.allkind()
+      .then((response) => {
+        setKind(response.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+  useEffect(() => {
+    fetchAlbumTypeData();
+    fetchKindData()
+  }, []);
 
   const handlePlayListSwitchOnClick = e => {
     setPlayListOpen(!isPlayListOpen);
   };
   const handleAdvancedSearchOnClick = e => {
     setAdvancedSearchOpen(!isAdvancedSearchOpen);
+  };
+  const handleItemAddOnClick = e => {
+    setItemAddOpen(!isItemAddOpen);
   };
   const handleVolumeOnChange = e => {
     setVolume(e.target.value);
@@ -208,7 +239,10 @@ function App() {
                     <div className="advancedItem">
                         發行類別
                         <select className="advancedtxt form-control" id="adType">
-                            {/* @* 網頁初始化時會在這裡更新搜尋的類別 *@ */}
+                        {/* @* 網頁初始化時會在這裡更新搜尋的類別 *@ */}
+                        { albumType.map((object, i) =>
+                            <option value={object.TypeID}>{object.TypeName}</option>
+                        )}
                         </select>
                     </div>
                 </div>
@@ -220,11 +254,19 @@ function App() {
                         {/* 偏好的曲風 */}
                         <div className="advancedBlock">
                             {/* @* 網頁初始化時會在這裡更新曲風與增加鈕 *@ */}
+                        { kinds.map((object, i,row) => i+1 ===row.length ? 
+                            <div><div className="selectedItem" style={{backgroundColor:object.Color,backgroundImage:`linear-gradient(to bottom,#16161660 100%,${object.Color})`}}>{object.KindName}</div> <div class="itemAdd" onClick={handleItemAddOnClick}><FontAwesomeIcon icon={faPlus}></FontAwesomeIcon></div></div>:
+                                <div className="selectedItem" style={{backgroundColor:object.Color,backgroundImage:`linear-gradient(to bottom,#16161660 100%,${object.Color})`}}>{object.KindName}</div>
+                        
+                        )}
                         </div>
 
                         {/* @* 點選+號後會出現的type選擇表，位置應在+號正下方 *@ */}
-                        <div className="selectableItemPanel">
+                        <div className={isItemAddOpen ? "selectableItemPanel adSwitch" : "selectableItemPanel"}>
                             {/* @* 網頁初始化時會在這裡更新曲風 *@ */}
+                            { kinds.map((object, i) =>
+                            <div className="selectableItem" style={{backgroundColor:object.Color,backgroundImage:`linear-gradient(to bottom,#16161660 100%,${object.Color})`}}>{object.KindName}</div>
+                        )}
                         </div>
                     </div>
 
