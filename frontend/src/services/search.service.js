@@ -9,6 +9,10 @@ class SearchService{
     return axios.get(environment.production.apiEndpoint + '/getProductsByProductName?name='+id);
   }
 
+  static allAlbumType = () =>{
+    return axios.get(environment.production.apiEndpoint + '/allAlbumType');
+  }
+
 }
  
 export default SearchService 
