@@ -8,5 +8,6 @@ export { default as MyAlbumList } from "./MyAlbumList";
 export { default as MyMusic } from "./MyMusic";
 export { default as Album } from "./Album";
 export { default as Search } from "./Search";
+export { default as ShoppingCart } from "./ShoppingCart";
 
 export { default as Modal } from "./Modal";
