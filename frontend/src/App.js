@@ -12,13 +12,14 @@ import {
   Notfound,
   KindResult,
   Search,
-  MyMusic
+  MyMusic,
+  ShoppingCart
 } from "./components";
 import SearchService from "./services/search.service";
 import KindService from "./services/kind.service";
 
  import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
- import { faSearch,faHome,faCaretLeft,faCaretRight,faHeadphones,faMusic,faPlus } from '@fortawesome/free-solid-svg-icons'
+ import { faSearch,faHome,faCaretLeft,faCaretRight,faHeadphones,faMusic,faPlus,faShoppingCart } from '@fortawesome/free-solid-svg-icons'
 
 import spiderfly from './images/spiderfly.png';
 import random from './PlayerImg/random.png';
@@ -334,6 +335,14 @@ function App() {
                             </div>
                         </a></Link>
                 </li>
+                <li>
+                        <Link to="/shoppingCart"><a href="">
+                            <div className={menuItemSelected === 5 ? "menuItem menuItemSelected" : "menuItem"} onClick={(e) => setMenuItemSelected(5)} >
+                            <FontAwesomeIcon icon={faShoppingCart}></FontAwesomeIcon>
+                            <span style={{color: menuItemSelected === 5 ? "white" : "#656565"}}>我的購物車</span>
+                            </div>
+                        </a></Link>
+                </li>
                 </div>
                 }
             </ul>
@@ -366,6 +375,9 @@ function App() {
                           </Route>
                           <Route path="/myMusic">
                               {userName === "" ? <Notfound /> : <MyMusic />}
+                          </Route>
+                          <Route path="/shoppingCart">
+                              {userName === "" ? <Notfound /> : <ShoppingCart />}
                           </Route>
                           <Route path="*">
                               <Notfound />
