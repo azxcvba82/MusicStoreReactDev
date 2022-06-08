@@ -13,8 +13,8 @@ import {
 axios.interceptors.request.use(
   request =>{
     if(request.url.startsWith(environment.production.apiEndpoint + '/api/')===true){
-      const tokenAccess = localStorage.getItem("token");
-    request.headers.common.Authorization = `Bearer ${tokenAccess}`
+      const user = JSON.parse(localStorage.getItem("user"));
+    request.headers.common.Authorization = `Bearer ${user.token}`
     }
     return request;
   },

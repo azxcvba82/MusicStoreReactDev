@@ -50,7 +50,7 @@ function App() {
   const [kinds, setKind] = useState([]);
   const [searchText, setSearchText] = useState("");
   const [userName, setUserName] = useState("");
-  const tokenAccess = localStorage.getItem("token");
+  const tokenAccess = localStorage.getItem("user");
 
   const fetchAlbumTypeData = () => {
     SearchService.allAlbumType()
@@ -117,7 +117,7 @@ function App() {
         setModalConponent("login")
     };
     const handleLoginoutOnClick = e => {
-        localStorage.setItem("token","");
+        localStorage.setItem("user",JSON.stringify({account: '',token: ''}));
         setUserName("")
     };
 
