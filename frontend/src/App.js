@@ -50,7 +50,7 @@ function App() {
   const [kinds, setKind] = useState([]);
   const [searchText, setSearchText] = useState("");
   const [userName, setUserName] = useState("");
-  const tokenAccess = localStorage.getItem("user");
+  const userOnLocalStorage = JSON.parse(localStorage.getItem("user"));
 
   const fetchAlbumTypeData = () => {
     SearchService.allAlbumType()
@@ -70,9 +70,23 @@ function App() {
         console.log(error);
       });
   };
+  const checkTokenExpire = () => {
+    if(userOnLocalStorage && userOnLocalStorage?.token != ""){
+        let currentTime = Math.floor(new Date().getTime()/1000);
+        let expireTime = Math.floor(new Date(userOnLocalStorage.expiresAt).getTime()/1000);
+        let expireDuration = expireTime -currentTime;
+        if(expireDuration < 0){
+            localStorage.setItem("user",JSON.stringify({account: '',token: ''}));
+            setUserName("")
+        }else{
+            setUserName(userOnLocalStorage.account)
+        }
+    }
+  };
   useEffect(() => {
     fetchAlbumTypeData();
     fetchKindData()
+    checkTokenExpire();
   }, []);
 
   const handlePlayListSwitchOnClick = e => {
