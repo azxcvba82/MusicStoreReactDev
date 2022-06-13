@@ -47,7 +47,7 @@ export default function Modal({
        setIsLoading(false);
        setIsError(false);
        setErrorMes("")
-       localStorage.setItem("user",JSON.stringify({account: account,token: response.data.token}));
+       localStorage.setItem("user",JSON.stringify({account: account,token: response.data.token,expiresAt: response.data.expiresAt}));
        result(account);
      })
      .catch((error) => {
