@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import ShoppingCartService from "../services/shoppingCart.service";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCircleNotch } from '@fortawesome/free-solid-svg-icons'
+import StorageService from "../services/storage.service";
 import {
   Notfound
 } from ".";
@@ -80,12 +81,24 @@ export default function ShoppingCart() {
                                     <td class="bg-dark" data-name="Member">
                                         <div>{object.Date}</div>
                                     </td>
-                                    <td class="bg-dark"> <img src="" /></td>
+                                    <td class="bg-dark"> <img src={StorageService.getBlobStorage() + object.CoverPath} /></td>
                                     <td class="bg-dark" data-name="pName">
                                         <div>
+                                    {object.IsAlbum !== 0 &&
+                                        object.AlbumName
+                                    }
+                                    {object.IsAlbum === 0 &&
+                                        object.ProductName
+                                    }
                                         </div>
                                     </td>
                                     <td class="bg-dark" data-name="Price">
+                                    {object.IsAlbum !== 0 &&
+                                        <div><span>NT$</span><div class="price d-inline-block">{object.ALPrice*object.ALDiscount}</div></div>
+                                    }
+                                    {object.IsAlbum === 0 &&
+                                        <div><span>NT$</span><div class="price d-inline-block">{object.Price*object.ALDiscount}</div></div>
+                                    }
 
                                     </td>
             
