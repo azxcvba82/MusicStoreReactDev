@@ -547,14 +547,14 @@ border-radius: 50%;
 margin: 4px 10px 0 5px;
 }
 
-.plSymbol i {
+.plSymbol svg {
 color: #258ade;
 transform: rotate(5deg) scaleY(1.1) skewX(10deg);
 }
 
 .plDescription {
 display: inline-block;
-width: 90%;
+width: 80%;
 }
 
 .hr {
@@ -584,7 +584,7 @@ overflow: hidden;
 background-color: #666666;
 }
 
-.playingSymbol i {
+.playingSymbol svg {
 color: #33b630;
 }
 /*清單的scroll條棒*/
@@ -1076,4 +1076,39 @@ td > img {
 
 .title {
   margin: 20px 8%;
+}
+
+
+/* _playList */
+
+/*播放清單的右鍵*/
+.contextmenu {
+  position: fixed;
+  display: none;
+  background-color: #525252;
+  cursor: pointer;
+  border-radius: 5px;
+  white-space: nowrap;
+  padding: 2px;
+}
+
+  .contextmenu > div {
+      padding: 10px;
+      border-radius: 5px;
+  }
+
+      .contextmenu > div:hover {
+          background-color: #676767;
+      }
+
+.noMusic {
+  position: absolute;
+  top: 40%;
+  left: 30%;
+  text-align: center;
+}
+
+.monthlyBtn {
+  color: #1ca4e9;
+  cursor: pointer;
 }
