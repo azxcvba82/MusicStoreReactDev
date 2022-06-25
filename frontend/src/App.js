@@ -17,6 +17,8 @@ import {
 } from "./components";
 import SearchService from "./services/search.service";
 import KindService from "./services/kind.service";
+import AlbumService from "./services/album.service";
+import StorageService from "./services/storage.service";
 
  import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
  import { faSearch,faHome,faCaretLeft,faCaretRight,faHeadphones,faMusic,faPlus,faShoppingCart } from '@fortawesome/free-solid-svg-icons'
@@ -43,6 +45,10 @@ function App() {
   let [displayPause, setDisplayPause] = useState("inline-block");
   let [displayMute, setDisplayMute] = useState("none");
   let [displayVolume, setDisplayVolume] = useState("inline-block");
+  let [disContextmenu, setContextmenu] = useState("none");
+  const [anchorPoint, setAnchorPoint] = useState({ x: 0, y: 0 });
+  let [playingItem, setPlayingItem] = useState(-1);
+  const [playList, setPlayList] = useState([]);
   let [volumeValue, setVolume] = useState(0.5);
   let [volumeBar, setDisplayVolumeBar] = useState("-webkit-linear-gradient(left , #5599FF 50%,#fff 0px)");
   let [menuItemSelected, setMenuItemSelected] = useState(0);
@@ -51,6 +57,12 @@ function App() {
   const [searchText, setSearchText] = useState("");
   const [userName, setUserName] = useState("");
   const userOnLocalStorage = JSON.parse(localStorage.getItem("user"));
+
+  //player
+  let [album, setAlbum] = useState("");
+  let [descriptiontwo, setDescriptiontwo] = useState("");
+  let [singer, setSinger] = useState("");
+  let [songcover, setSongcover] = useState("");
 
   const fetchAlbumTypeData = () => {
     SearchService.allAlbumType()
@@ -70,6 +82,15 @@ function App() {
         console.log(error);
       });
   };
+  const fetchUserPlayList = () => {
+    AlbumService.getPlayListByAccount()
+      .then((response) => {
+        setPlayList(response.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
   const checkTokenExpire = () => {
     if(userOnLocalStorage && userOnLocalStorage?.token != ""){
         let currentTime = Math.floor(new Date().getTime()/1000);
@@ -77,9 +98,10 @@ function App() {
         let expireDuration = expireTime -currentTime;
         if(expireDuration < 0){
             localStorage.setItem("user",JSON.stringify({account: '',token: ''}));
-            setUserName("")
+            setUserName("");
         }else{
-            setUserName(userOnLocalStorage.account)
+            setUserName(userOnLocalStorage.account);
+            fetchUserPlayList();
         }
     }
   };
@@ -87,7 +109,35 @@ function App() {
     fetchAlbumTypeData();
     fetchKindData()
     checkTokenExpire();
+    document.addEventListener("click", handleClick);
+    document.addEventListener("contextmenu", handleContextMenu);
+    return () => {
+        document.removeEventListener("click", handleClick);
+        document.removeEventListener("contextmenu", handleContextMenu);
+      };
   }, []);
+
+  const handleContextMenu = useCallback(
+    (event) => {
+    if(event.target.classList.contains("playListItem") ||
+    event.target.parentElement.classList.contains("playListItem") ||
+    event.target.parentElement.parentElement.classList.contains("playListItem")){
+      event.preventDefault();
+      setAnchorPoint({ x: event.pageX, y: event.pageY });
+      setContextmenu("block")
+    }
+    },
+    [setAnchorPoint]
+  );
+
+  const handleClick = useCallback((event) => {
+    if(event.target.classList.contains("playListItem") ||
+    event.target.parentElement.classList.contains("playListItem") ||
+    event.target.parentElement.parentElement.classList.contains("playListItem")){
+    }else{
+        setContextmenu("none")
+    }
+}, []);
 
   const handlePlayListSwitchOnClick = e => {
     setPlayListOpen(!isPlayListOpen);
@@ -152,7 +202,8 @@ function App() {
     }
       };
       const handleModalCallback = useCallback(async (name) => {
-        setUserName(name)
+        setUserName(name);
+        fetchUserPlayList();
         setModalConponent("")
         setTimeout(function () {
             setModalEffect(false);
@@ -193,6 +244,42 @@ function App() {
                 </div>
                 :
                 <div className="playListPartialView">
+                    { playList?.length === 0 ? 
+                        <div className="noMusic">
+                        <div className="h5">播放清單是空的喔</div>
+                        </div>
+                        :
+                        <div>
+                        <div className={playingItem === 0 ? "playListItem playingItem" : "playListItem"} title="點擊撥放" onClick={(e) => {setPlayingItem(0);setDescriptiontwo(playList[0].ProductName);setSinger(playList[0].Singer);setSongcover(StorageService.getBlobStorage() + playList[0].CoverPath);setAlbum(playList[0].AlbumName);}}>
+                            <div className={playingItem === 0 ? "plSymbol playingSymbol" : "plSymbol"}>
+                                <FontAwesomeIcon icon={faMusic}></FontAwesomeIcon>
+                            </div>
+                                <div className="plDescription">
+                                <div className="mTitle">{playList[0].ProductName}</div>
+                                <div className="hr"></div>
+                                <div className="mDetail">{playList[0].AlbumName} - {playList[0].Singer}</div>
+                            </div>
+                        </div>
+                        <div>
+                            { playList.map((object, i) => i > 0 && 
+                                <div className={playingItem === i ? "playListItem playingItem" : "playListItem"} onClick={(e) => {setPlayingItem(i);setDescriptiontwo(object.ProductName);setSinger(object.Singer);setSongcover(StorageService.getBlobStorage() + object.CoverPath);setAlbum(object.AlbumName);}}>
+                               <div className={playingItem === i ? "plSymbol playingSymbol" : "plSymbol"}>
+                                    <FontAwesomeIcon icon={faMusic}></FontAwesomeIcon>
+                               </div>
+                               <div className="plDescription">
+                                   <div className="mTitle">{object.ProductName}</div>
+                                   <div className="hr"></div>
+                                   <div className="mDetail">{object.AlbumName} - {object.Singer}</div>
+                               </div>
+                                </div>
+                            )}
+                        </div>
+                        </div>
+                    }
+                    <div class="contextmenu" style={{display: disContextmenu,top: anchorPoint.y, left: anchorPoint.x}}>
+                        <div class="itemDelete" data-deleteid="0">從播放清單中刪除此曲</div>
+                        <div>取消</div>
+                    </div>
                 </div>
         }
         </div>
@@ -405,13 +492,13 @@ function App() {
                 {/* 封面與歌名div */}
 
                 <figure id="playerfigure">
-                    <img id="playercover" className="playerCover"/>
+                    <img id="playercover" src={songcover} className="playerCover"/>
                 </figure>
 
                 <div id="titlePanel">
-                    <span className="album description"></span><br />
-                    <span id="Descriptiontwo" className="music descriptionSub"></span><br />
-                    <span id="singer" className="singer descriptionSub"></span>
+                    <span className="album description">{album}</span><br />
+                    <span id="Descriptiontwo" className="music descriptionSub">{descriptiontwo}</span><br />
+                    <span id="singer" className="singer descriptionSub">{singer}</span>
                 </div>
                 {/* 基本按鍵div */}
                 <div id="btnPanel">

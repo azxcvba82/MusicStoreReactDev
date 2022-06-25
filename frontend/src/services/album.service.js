@@ -17,6 +17,10 @@ class AlbumService{
     return axios.get(environment.production.apiEndpoint + '/getAlbumsByKindId?kindId='+id);
   }
 
+  static getPlayListByAccount = () =>{
+    return axios.get(environment.production.apiEndpoint + '/api/getPlayListByAccount');
+  }
+
 }
  
 export default AlbumService 
