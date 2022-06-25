@@ -10,7 +10,7 @@ import StorageService from "../services/storage.service";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCartArrowDown,faPlus,faCircleNotch } from '@fortawesome/free-solid-svg-icons'
 
-export default function Album() {
+export default function Album({result}) {
   let { id } = useParams();
   const [album, setAlbum] = useState({});
   const [products, setProducts] = useState([]);
@@ -37,10 +37,23 @@ export default function Album() {
         console.log(error);
       });
   };
+  const postPlayListData = (id) => {
+    AlbumService.addPlayLists(id)
+      .then((response) => {
+        result();
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
   useEffect(() => {
     fetchAlbumData();
     fetchProductData();
   }, []);
+
+  const handleAddThisSongToPlayList = (amid) => {
+    postPlayListData(amid);
+  };
 
   if (isLoading) {
     return <div class="loading">
@@ -103,8 +116,8 @@ export default function Album() {
             <h4 style={{display:"inlineBlock"}} class="fold-title">
                 <span>{i+1}.</span>
                 <span class="foldText">{object.ProductName}</span>
-                <i class="addThisSongToCart"><FontAwesomeIcon icon={faCartArrowDown}></FontAwesomeIcon></i>
-                <span><i class="addThisSongToPlayList"><FontAwesomeIcon icon={faPlus}></FontAwesomeIcon></i></span>
+                <i class="addThisSongToCart fas"><FontAwesomeIcon icon={faCartArrowDown}></FontAwesomeIcon></i>
+                <span><i class="addThisSongToPlayList fa" onClick={(e) =>handleAddThisSongToPlayList(object.ProductID)}><FontAwesomeIcon icon={faPlus}></FontAwesomeIcon></i></span>
             </h4>
             <div class="fold">
                 <div class="fold-container">

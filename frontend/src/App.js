@@ -49,6 +49,7 @@ function App() {
   const [anchorPoint, setAnchorPoint] = useState({ x: 0, y: 0 });
   let [playingItem, setPlayingItem] = useState(-1);
   const [playList, setPlayList] = useState([]);
+  let [selectedProductId, setSelectedProductId] = useState(-1);
   let [volumeValue, setVolume] = useState(0.5);
   let [volumeBar, setDisplayVolumeBar] = useState("-webkit-linear-gradient(left , #5599FF 50%,#fff 0px)");
   let [menuItemSelected, setMenuItemSelected] = useState(0);
@@ -91,6 +92,15 @@ function App() {
         console.log(error);
       });
   };
+  const postPlayListData = (id) => {
+    AlbumService.deletePlayLists(id)
+      .then((response) => {
+        fetchUserPlayList();
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
   const checkTokenExpire = () => {
     if(userOnLocalStorage && userOnLocalStorage?.token != ""){
         let currentTime = Math.floor(new Date().getTime()/1000);
@@ -125,6 +135,15 @@ function App() {
       event.preventDefault();
       setAnchorPoint({ x: event.pageX, y: event.pageY });
       setContextmenu("block")
+      if(event.target.dataset.soid !== undefined){
+        setSelectedProductId(event.target.dataset.soid);
+      }
+      else if(event.target.parentElement.dataset.soid !== undefined){
+        setSelectedProductId(event.target.parentElement.dataset.soid);
+      }
+      else if(event.target.parentElement.parentElement.dataset.soid !== undefined){
+        setSelectedProductId(event.target.parentElement.parentElement.dataset.soid);
+      }
     }
     },
     [setAnchorPoint]
@@ -138,6 +157,12 @@ function App() {
         setContextmenu("none")
     }
 }, []);
+
+const handleItemDelete = () => {
+    if(selectedProductId !== undefined && selectedProductId !== -1){
+    postPlayListData(selectedProductId);
+    }
+  };
 
   const handlePlayListSwitchOnClick = e => {
     setPlayListOpen(!isPlayListOpen);
@@ -212,6 +237,9 @@ function App() {
             setModalInterface("none");
         }, 500)
       });
+      const handlePlayListCallback = useCallback(async () => {
+        fetchUserPlayList();
+      });
 
       function useQuery() {
         const { search } = useLocation();
@@ -250,7 +278,7 @@ function App() {
                         </div>
                         :
                         <div>
-                        <div className={playingItem === 0 ? "playListItem playingItem" : "playListItem"} title="點擊撥放" onClick={(e) => {setPlayingItem(0);setDescriptiontwo(playList[0].ProductName);setSinger(playList[0].Singer);setSongcover(StorageService.getBlobStorage() + playList[0].CoverPath);setAlbum(playList[0].AlbumName);}}>
+                        <div className={playingItem === 0 ? "playListItem playingItem" : "playListItem"} title="點擊撥放" data-soid={playList[0].ProductID} onClick={(e) => {setPlayingItem(0);setDescriptiontwo(playList[0].ProductName);setSinger(playList[0].Singer);setSongcover(StorageService.getBlobStorage() + playList[0].CoverPath);setAlbum(playList[0].AlbumName);}}>
                             <div className={playingItem === 0 ? "plSymbol playingSymbol" : "plSymbol"}>
                                 <FontAwesomeIcon icon={faMusic}></FontAwesomeIcon>
                             </div>
@@ -262,7 +290,7 @@ function App() {
                         </div>
                         <div>
                             { playList.map((object, i) => i > 0 && 
-                                <div className={playingItem === i ? "playListItem playingItem" : "playListItem"} onClick={(e) => {setPlayingItem(i);setDescriptiontwo(object.ProductName);setSinger(object.Singer);setSongcover(StorageService.getBlobStorage() + object.CoverPath);setAlbum(object.AlbumName);}}>
+                                <div className={playingItem === i ? "playListItem playingItem" : "playListItem"} data-soid={object.ProductID} onClick={(e) => {setPlayingItem(i);setDescriptiontwo(object.ProductName);setSinger(object.Singer);setSongcover(StorageService.getBlobStorage() + object.CoverPath);setAlbum(object.AlbumName);}}>
                                <div className={playingItem === i ? "plSymbol playingSymbol" : "plSymbol"}>
                                     <FontAwesomeIcon icon={faMusic}></FontAwesomeIcon>
                                </div>
@@ -277,7 +305,7 @@ function App() {
                         </div>
                     }
                     <div class="contextmenu" style={{display: disContextmenu,top: anchorPoint.y, left: anchorPoint.x}}>
-                        <div class="itemDelete" data-deleteid="0">從播放清單中刪除此曲</div>
+                        <div class="itemDelete" onClick={e=>{handleItemDelete()}} >從播放清單中刪除此曲</div>
                         <div>取消</div>
                     </div>
                 </div>
@@ -466,7 +494,7 @@ function App() {
                               <h3>please enter albumId</h3>
                           </Route>
                           <Route path="/album/:id">
-                              <Album />
+                              <Album result={handlePlayListCallback} />
                           </Route>
                           <Route path="/search" >
                           <Search name={query.get("name")} />
