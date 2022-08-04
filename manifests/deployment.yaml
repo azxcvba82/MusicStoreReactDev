@@ -15,3 +15,7 @@ spec:
       containers:
       - name: store-react-frontend
         image: docker.io/azxcvba81/henry_dev_store_react:latest
+      tolerations:
+      - key: "kubernetes.azure.com/scalesetpriority"
+        operator: "Exists"
+        effect: "NoSchedule"
