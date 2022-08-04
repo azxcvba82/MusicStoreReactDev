@@ -59,7 +59,7 @@ export default function Modal({
   };
 
   const postSignupData = () => {
-    LoginService.login(account,password,email)
+    LoginService.signup(account,password,email)
       .then((response) => {
         setPassword("")
         setIsLoading(false);
