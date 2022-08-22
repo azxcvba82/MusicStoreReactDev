@@ -18,6 +18,9 @@ class LoginService {
       email
    })
   }
+  static getSSOConfig() {
+    return axios.get(environment.production.apiEndpoint +'/getSSOConfig')
+  }
 }
  
 export default LoginService 
