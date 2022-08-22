@@ -40,6 +40,11 @@ export default function Modal({
     }
   };
 
+  const handleGoogleSSOClick = e => {
+    e.preventDefault();
+    getSSOConfig();
+  };
+
   const postLoginData = () => {
     LoginService.login(account,password)
      .then((response) => {
@@ -75,6 +80,22 @@ export default function Modal({
         setErrorMes(error.response.data.message)
       });
   };
+
+  const getSSOConfig = () => {
+    LoginService.getSSOConfig()
+     .then((response) => {
+       setIsLoading(false);
+       setIsError(false);
+       setErrorMes("")
+       window.location.replace(response.data);
+     })
+     .catch((error) => {
+       setIsLoading(false);
+       setIsError(true);
+       setErrorMes(error.response.data.message)
+     });
+  };
+
     if(action==="login"){
       display = (
         <form  method="post" id="LoginForm" >
@@ -88,6 +109,7 @@ export default function Modal({
               </div>
               <div className="error">{errorMes}</div>
               <div className="loingBtn" type="submit" onClick={handleLoginSubmit}>登入</div>
+              <div className="loingBtn" type="submit" onClick={handleGoogleSSOClick}>Login By Google</div>
           </div>
         </form>
     );
