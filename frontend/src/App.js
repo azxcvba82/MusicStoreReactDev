@@ -19,6 +19,7 @@ import SearchService from "./services/search.service";
 import KindService from "./services/kind.service";
 import AlbumService from "./services/album.service";
 import StorageService from "./services/storage.service";
+import LoginService from "./services/login.service";
 
  import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
  import { faSearch,faHome,faCaretLeft,faCaretRight,faHeadphones,faMusic,faPlus,faShoppingCart } from '@fortawesome/free-solid-svg-icons'
@@ -65,6 +66,31 @@ function App() {
   let [singer, setSinger] = useState("");
   let [songcover, setSongcover] = useState("");
 
+  const checkFragments = () => {
+    const { hash } = window.location;
+    if(!hash.startsWith("#")){
+        return;
+    }
+    const result = {};
+    const query = hash.replace("#","");
+    query.split('&').forEach(function(part) {
+        const item = part.split('=');
+        result[item[0]] = decodeURIComponent(item[1]);
+      });
+    ssoLogin(result.state,result.id_token);
+
+    // clear fragments
+    window.history.pushState("", document.title, window.location.pathname + window.location.search);
+  };
+  const ssoLogin = (stateBase64, idTokenBase64) => {
+    LoginService.ssoLogin(stateBase64, idTokenBase64)
+      .then((response) => {
+        console.log(response.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
   const fetchAlbumTypeData = () => {
     SearchService.allAlbumType()
       .then((response) => {
@@ -116,6 +142,7 @@ function App() {
     }
   };
   useEffect(() => {
+    checkFragments();
     fetchAlbumTypeData();
     fetchKindData()
     checkTokenExpire();
