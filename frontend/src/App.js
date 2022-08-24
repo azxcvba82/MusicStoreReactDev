@@ -39,6 +39,7 @@ function App() {
   let [displayModalInterface, setModalInterface] = useState("none");
   let [displayModalEffect, setModalEffect] = useState(false);
   let [displayModalConponent, setModalConponent] = useState("");
+  let [displayModalMessage, setModalMessage] = useState("");
   const [isPlayListOpen, setPlayListOpen] = useState(false);
   const [isAdvancedSearchOpen, setAdvancedSearchOpen] = useState(false);
   const [isItemAddOpen, setItemAddOpen] = useState(false);
@@ -88,6 +89,10 @@ function App() {
         console.log(response.data);
       })
       .catch((error) => {
+        setModalInterface("block");
+        setModalEffect(true);
+        setModalConponent("error")
+        setModalMessage("not valid user")
         console.log(error);
       });
   };
@@ -345,6 +350,7 @@ const handleItemDelete = () => {
         <div id="modalContent" className={displayModalEffect ? "fadein" :""}>
             <Modal action={displayModalConponent}
             result={handleModalCallback}
+            message={displayModalMessage}
             />
             {/* @* 這裡的內容隨按鍵改變而讀取 *@ */}
         </div>

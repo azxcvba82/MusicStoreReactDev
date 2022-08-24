@@ -4,7 +4,8 @@ import LoginService from "../services/login.service";
 
 export default function Modal({
   action,
-  result
+  result,
+  message
 }) {
   let display = "";
   const [isLoading, setIsLoading] = useState(false);
@@ -137,7 +138,7 @@ export default function Modal({
       )
     }else{
       
-      display =  (<div></div>)
+      display =  (<div>{message}</div>)
     }
     return  display;
 }
