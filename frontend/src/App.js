@@ -86,7 +86,16 @@ function App() {
   const ssoLogin = (stateBase64, idTokenBase64) => {
     LoginService.ssoLogin(stateBase64, idTokenBase64)
       .then((response) => {
-        console.log(response.data);
+        localStorage.setItem("user",JSON.stringify({account: response.data.account,token: response.data.token,expiresAt: response.data.expiresAt}));
+        setUserName(response.data.account);
+        fetchUserPlayList();
+        setModalConponent("")
+        setTimeout(function () {
+            setModalEffect(false);
+        }, 10)
+        setTimeout(function () {
+            setModalInterface("none");
+        }, 500)
       })
       .catch((error) => {
         setModalInterface("block");
