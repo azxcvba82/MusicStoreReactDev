@@ -81,7 +81,7 @@ function App() {
     ssoLogin(result.state,result.id_token);
 
     // clear fragments
-    window.history.pushState("", document.title, window.location.pathname + window.location.search);
+    //window.history.pushState("", document.title, window.location.pathname + window.location.search);
   };
   const ssoLogin = (stateBase64, idTokenBase64) => {
     LoginService.ssoLogin(stateBase64, idTokenBase64)
