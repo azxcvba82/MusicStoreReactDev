@@ -7,6 +7,7 @@ import {
   Mainbox,
   Kind,
   Modal,
+  Verify,
   Album,
   MyAlbumList,
   Notfound,
@@ -540,6 +541,9 @@ const handleItemDelete = () => {
                           </Route>
                           <Route path="/search" >
                           <Search name={query.get("name")} />
+                          </Route>
+                          <Route path="/verify" >
+                          <Verify token={query.get("token")} />
                           </Route>
                           <Route path="/myAlbumList">
                               {userName === "" ? <Notfound /> : <MyAlbumList />}

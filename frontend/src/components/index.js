@@ -11,3 +11,4 @@ export { default as Search } from "./Search";
 export { default as ShoppingCart } from "./ShoppingCart";
 
 export { default as Modal } from "./Modal";
+export { default as Verify } from "./Verify";
