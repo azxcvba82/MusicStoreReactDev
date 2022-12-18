@@ -24,6 +24,9 @@ class LoginService {
   static ssoLogin(stateBase64, idTokenBase64) {
     return axios.post(environment.production.apiEndpoint +'/ssoLogin',{stateBase64, idTokenBase64})
   }
+  static verify(token) {
+    return axios.post(environment.production.apiEndpoint +'/verify',{token})
+  }
 }
  
 export default LoginService 
