@@ -271,6 +271,7 @@ const handleItemDelete = () => {
       const handleModalCallback = useCallback(async (name) => {
         setUserName(name);
         fetchUserPlayList();
+        if(name !== "signup"){
         setModalConponent("")
         setTimeout(function () {
             setModalEffect(false);
@@ -278,6 +279,9 @@ const handleItemDelete = () => {
         setTimeout(function () {
             setModalInterface("none");
         }, 500)
+        }else{
+            setModalConponent("we have sent verification mail to you, plz click it whithin 15 mins.")
+        }
       });
       const handlePlayListCallback = useCallback(async () => {
         fetchUserPlayList();

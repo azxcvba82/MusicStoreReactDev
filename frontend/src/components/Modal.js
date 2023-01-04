@@ -71,8 +71,8 @@ export default function Modal({
         setIsLoading(false);
         setIsError(false);
         setErrorMes("")
-        localStorage.setItem("user",JSON.stringify({account: account,token: response.data.token}));
-        result(account);
+        //localStorage.setItem("user",JSON.stringify({account: account,token: response.data.token}));
+        result("signup");
       })
       .catch((error) => {
         setPassword("")
