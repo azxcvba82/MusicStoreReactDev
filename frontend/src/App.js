@@ -269,9 +269,9 @@ const handleItemDelete = () => {
     }
       };
       const handleModalCallback = useCallback(async (name) => {
+        if(name !== "verify"){
         setUserName(name);
         fetchUserPlayList();
-        if(name !== "verify"){
         setModalConponent("")
         setTimeout(function () {
             setModalEffect(false);
