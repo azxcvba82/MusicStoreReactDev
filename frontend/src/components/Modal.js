@@ -72,7 +72,7 @@ export default function Modal({
         setIsError(false);
         setErrorMes("")
         //localStorage.setItem("user",JSON.stringify({account: account,token: response.data.token}));
-        result("signup");
+        result("verify");
       })
       .catch((error) => {
         setPassword("")
@@ -136,7 +136,16 @@ export default function Modal({
                 </div>
         </form>
       )
-    }else{
+    }else if(action==="verify"){
+      display =  (
+        <form  id="VerifyForm">
+                <div  className="box" id="verify">
+                    <div className="error">we have sent verification mail to you, plz click it whithin 15 mins.</div>
+                </div>
+        </form>
+        )
+      }
+    else{
       
       display =  (<div>{message}</div>)
     }
