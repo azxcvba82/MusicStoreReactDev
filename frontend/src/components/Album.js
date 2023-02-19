@@ -85,7 +85,7 @@ export default function Album({result}) {
         }
         {album.Discount == 1 &&
             <div class="mb-4">
-                專輯售價：${album.fALPrice}
+                專輯售價：${album.ALPrice}
                 <i data-albumid={album.AlbumID} class="fas fa-cart-arrow-down addThisAlbumToCart  fa-2x"></i>
             </div>
         }
