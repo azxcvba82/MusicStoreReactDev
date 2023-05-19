@@ -20,7 +20,7 @@ export default function Mainbox() {
     HomepageService.mainActivities()
       .then((response) => {
         setIsLoading(false);
-        setActivities(response.data);
+        if (response.data !== null) setActivities(response.data);
       })
       .catch((error) => {
         setIsLoading(false);
@@ -32,7 +32,7 @@ export default function Mainbox() {
     HomepageService.mainAlbums()
       .then((response) => {
         setIsLoading(false);
-        setAlbums(response.data);
+        if (response.data !== null) setAlbums(response.data);
       })
       .catch((error) => {
         setIsLoading(false);
