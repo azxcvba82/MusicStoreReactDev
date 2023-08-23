@@ -11,6 +11,7 @@ import {
 
 // interceptors start
 axios.defaults.headers.post['Access-Control-Allow-Origin'] = '*';
+axios.defaults.headers.get['Access-Control-Allow-Origin'] = '*';
 axios.interceptors.request.use(
   request =>{
     if(request.url.startsWith(environment.production.apiEndpoint + '/api/')===true){
