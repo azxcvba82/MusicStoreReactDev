@@ -10,8 +10,7 @@ import {
 } from "./environment";
 
 // interceptors start
-axios.defaults.headers.post['Access-Control-Allow-Origin'] = '*';
-axios.defaults.headers.get['Access-Control-Allow-Origin'] = '*';
+axios.defaults.headers.post['Content-Type'] ='application/x-www-form-urlencoded';
 axios.interceptors.request.use(
   request =>{
     if(request.url.startsWith(environment.production.apiEndpoint + '/api/')===true){
