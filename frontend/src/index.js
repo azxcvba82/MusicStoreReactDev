@@ -13,6 +13,7 @@ import {
 axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
 axios.interceptors.request.use(
   request =>{
+    request.headers.common['Access-Control-Allow-Origin'] = '*';
     if(request.url.startsWith(environment.production.apiEndpoint + '/api/')===true){
       const user = JSON.parse(localStorage.getItem("user"));
     request.headers.common.Authorization = `Bearer ${user.token}`
