@@ -10,7 +10,7 @@ import {
 } from "./environment";
 
 // interceptors start
-axios.defaults.crossDomain = true;
+axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
 axios.interceptors.request.use(
   request =>{
     if(request.url.startsWith(environment.production.apiEndpoint + '/api/')===true){
