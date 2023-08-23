@@ -10,9 +10,9 @@ import {
 } from "./environment";
 
 // interceptors start
+axios.defaults.crossDomain = true;
 axios.interceptors.request.use(
   request =>{
-    request.headers['Access-Control-Allow-Origin'] = '*'
     if(request.url.startsWith(environment.production.apiEndpoint + '/api/')===true){
       const user = JSON.parse(localStorage.getItem("user"));
     request.headers.common.Authorization = `Bearer ${user.token}`
