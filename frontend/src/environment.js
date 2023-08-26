@@ -2,7 +2,7 @@
 
 export const environment =  {
   production : {
-    apiEndpoint: "https://api.azxcvba99.net",
+    apiEndpoint: "https://app-go-dev-api.azurewebsites.net",
     blobStorage:  "https://staticdatahenry.blob.core.windows.net/images/"
   },
   develop : {
