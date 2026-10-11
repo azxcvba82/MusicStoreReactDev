@@ -2,12 +2,12 @@
 
 export const environment =  {
   production : {
-    apiEndpoint: process.env.REACT_APP_API_ENDPOINT,
+    apiEndpoint: "https://api.azxcvba99.net",
         //apiEndpoint: "http://localhost:80",
     blobStorage:  "https://staticdatahenry.blob.core.windows.net/images/"
   },
   develop : {
-    apiEndpoint: process.env.REACT_APP_API_ENDPOINT,
+    apiEndpoint: "https://api.azxcvba99.net",
     blobStorage:  "https://staticdatahenry.blob.core.windows.net/images/"
   }
 };
