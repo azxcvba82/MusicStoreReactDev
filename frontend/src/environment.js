@@ -2,11 +2,12 @@
 
 export const environment =  {
   production : {
-    apiEndpoint: "https://app-go-dev-api.azurewebsites.net",
+    apiEndpoint: process.env.REACT_APP_API_ENDPOINT,
+        //apiEndpoint: "http://localhost:80",
     blobStorage:  "https://staticdatahenry.blob.core.windows.net/images/"
   },
   develop : {
-    apiEndpoint: "https://api.azxcvba99.net",
+    apiEndpoint: process.env.REACT_APP_API_ENDPOINT,
     blobStorage:  "https://staticdatahenry.blob.core.windows.net/images/"
   }
 };
